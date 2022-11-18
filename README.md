@@ -11,6 +11,8 @@ https://www.msra.cn/zh-cn/news/features/swin-transformer-v2
 
 https://zhuanlan.zhihu.com/p/435210138
 
+https://arxiv.org/pdf/2103.14030.pdf
+
 ### Swin_S3_base
 https://cloud.tencent.com/developer/article/1916798
 
