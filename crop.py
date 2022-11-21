@@ -28,10 +28,10 @@ data_transform = transforms.Compose([
 
 train_data = datasets.ImageFolder(root_path, transform = data_transform)
 print(train_data.classes)
-train_loader = DataLoader(dataset = train_data, batch_size = 32, shuffle = True)
+train_loader = DataLoader(dataset = train_data, batch_size = 36, shuffle = True)
 
 def build_model():
-    model = timm.create_model('swin_s3_base_224', pretrained = True, num_classes = 33)
+    model = timm.create_model('efficientnet_b1', pretrained = True, num_classes = 33)
     for name, param in model.named_parameters():
         param.requires_grad = True
     print(model.get_classifier())
@@ -97,8 +97,8 @@ def train(model, x_train, epochs, batch_size=8):
     return train_state
 
 model = build_model()
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr = 0.001)
+criterion = nn.CrossEntropyLoss().to(device)
+optimizer = optim.Adam(model.parameters())
 train_state = train(model, train_loader, epochs=EPOCHS, batch_size=30)
 torch.save(model.state_dict(),'./swin_base.pth')
 
