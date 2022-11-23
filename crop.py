@@ -13,10 +13,11 @@ import time
 
 root_path = "../YuAn/crops_dataset/"
 EPOCHS = 20
+BATCH_SIZE = 18
 device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 print(device)
 
-resize = 224
+resize = 320
 data_transform = transforms.Compose([
     transforms.Resize((resize, resize)),
     transforms.ToTensor(),
@@ -28,10 +29,12 @@ data_transform = transforms.Compose([
 
 train_data = datasets.ImageFolder(root_path, transform = data_transform)
 print(train_data.classes)
-train_loader = DataLoader(dataset = train_data, batch_size = 36, shuffle = True)
+NUM_CLASSES = len(train_data.classes)
+
+train_loader = DataLoader(dataset = train_data, batch_size = BATCH_SIZE, shuffle = True)
 
 def build_model():
-    model = timm.create_model('efficientnet_b1', pretrained = True, num_classes = 33)
+    model = timm.create_model('convnext_base', pretrained = True, num_classes = NUM_CLASSES)
     for name, param in model.named_parameters():
         param.requires_grad = True
     print(model.get_classifier())
@@ -39,7 +42,7 @@ def build_model():
     print(model)
     return model
 
-def train(model, x_train, epochs, batch_size=8):
+def train(model, x_train, epochs, batch_size=BATCH_SIZE):
     def acc_cal(pred, t):
         matrix = np.argmax(pred, axis=1)
         compare = matrix - t
@@ -47,7 +50,7 @@ def train(model, x_train, epochs, batch_size=8):
         return accuracy
 
     criterion = nn.CrossEntropyLoss().to(device)
-    optimizer = optim.Adam(model.parameters())
+    optimizer = optim.AdamW(model.parameters(), lr = 1e-5)
     train_state = []
     torch.cuda.empty_cache()
     early_stopping_count = -1
@@ -97,10 +100,8 @@ def train(model, x_train, epochs, batch_size=8):
     return train_state
 
 model = build_model()
-criterion = nn.CrossEntropyLoss().to(device)
-optimizer = optim.Adam(model.parameters())
 train_state = train(model, train_loader, epochs=EPOCHS, batch_size=30)
-torch.save(model.state_dict(),'./swin_base.pth')
+torch.save(model.state_dict(),'./convnext_base.pth')
 
 
 
