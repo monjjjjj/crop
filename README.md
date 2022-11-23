@@ -6,6 +6,8 @@ https://blog.51cto.com/u_15279692/2971138
 
 https://datawhalechina.github.io/thorough-pytorch/%E7%AC%AC%E5%85%AD%E7%AB%A0/6.3%20%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83-timm.html
 
+https://github.com/rwightman/pytorch-image-models#models
+
 ### swin transformer
 https://www.msra.cn/zh-cn/news/features/swin-transformer-v2
 
