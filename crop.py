@@ -96,6 +96,7 @@ def train(model, x_train, epochs, batch_size=BATCH_SIZE):
         else:
             early_stopping_count = 0
         early_stopping_loss = avg_loss
+        torch.save(model.state_dict(), f"./path/timm_model_{epoch}.pth")
     print('Finished Training')
     return train_state
 
