@@ -8,6 +8,8 @@ https://datawhalechina.github.io/thorough-pytorch/%E7%AC%AC%E5%85%AD%E7%AB%A0/6.
 
 https://github.com/rwightman/pytorch-image-models#models
 
+https://github.com/rwightman/pytorch-image-model
+
 ### swin transformer
 https://www.msra.cn/zh-cn/news/features/swin-transformer-v2
 
