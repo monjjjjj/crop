@@ -36,3 +36,5 @@ https://www.kaggle.com/code/florianm/pytorch-convnext/notebook#PyTroch-Trainer
 https://github.com/sayakpaul/ConvNeXt-TF
 
 https://www.mdpi.com/2076-3417/12/18/9016/htm
+
+https://huggingface.co/docs/transformers/model_doc/convnext
