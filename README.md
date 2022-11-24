@@ -34,3 +34,5 @@ https://arxiv.org/pdf/2201.03545.pdf
 https://www.kaggle.com/code/florianm/pytorch-convnext/notebook#PyTroch-Trainer
 
 https://github.com/sayakpaul/ConvNeXt-TF
+
+https://www.mdpi.com/2076-3417/12/18/9016/htm
