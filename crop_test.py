@@ -34,7 +34,10 @@ train_data = datasets.ImageFolder(TRAIN_DATA_PATH)
 category_dict = {j:i for i, j in train_data.class_to_idx.items()}
 test_data = datasets.ImageFolder(TEST_DATA_PATH, 
                                   transform=transforms.Compose([transforms.ToTensor(),
-                                                                transforms.Resize((sizeW, sizeH))]))
+                                                                transforms.Resize((sizeW, sizeH)),
+                                                                transforms.Normalize(
+                                                                     mean=[0.485, 0.456, 0.406],
+                                                                     std=[0.229, 0.224, 0.225])])
 filename = [imgPath.replace("../YuAn/public_test/public_test/", "") for imgPath, fakeLabel in test_data.imgs]
 test_loader = torch.utils.data.DataLoader(dataset=test_data, batch_size=batch_size, shuffle=False)
 category = len(train_data.classes)
