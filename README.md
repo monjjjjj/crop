@@ -29,6 +29,8 @@ https://proceedings.neurips.cc/paper/2021/file/48e95c45c8217961bf6cd7696d80d238-
 https://arxiv.org/pdf/2104.00298.pdf
 
 ### ConvNext
+[ConvNext詳解](https://zhuanlan.zhihu.com/p/459163188)
+
 https://arxiv.org/pdf/2201.03545.pdf
 
 https://www.kaggle.com/code/florianm/pytorch-convnext/notebook#PyTroch-Trainer
