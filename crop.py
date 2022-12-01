@@ -7,34 +7,33 @@ import torch.optim as optim
 import matplotlib.pyplot as plt
 from torch.autograd import Variable
 from torch.utils.data import Dataset, DataLoader, random_split
-from torchvision import models, transforms, datasets
+import torchvision.models as models
+from torchvision import transforms, datasets
 import numpy as np
 import time
+import pathlib
+
 
 root_path = "../YuAn/crops_dataset/"
 EPOCHS = 20
-BATCH_SIZE = 18
+BATCH_SIZE = 10
 device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 print(device)
 
-resize = 320
-data_transform = transforms.Compose([
-    transforms.Resize((resize, resize)),
-    transforms.ToTensor(),
-    transforms.Normalize(
-        mean = [0.485, 0.456, 0.406],
-        std = [0.229, 0.224, 0.225]
-    )
-])
+sizeW, sizeH = 384, 384
+data_transform = transforms.Compose([transforms.Resize((sizeW, sizeH)),
+                                     transforms.RandomHorizontalFlip(p=0.5),
+                                     transforms.RandomRotation(degrees=(-30, 30)),
+                                     transforms.ToTensor(),
+                                     transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])])
 
 train_data = datasets.ImageFolder(root_path, transform = data_transform)
-print(train_data.classes)
+print(train_data.classes, "\n")
+train_loader = DataLoader(dataset = train_data, batch_size = BATCH_SIZE, shuffle = True)
 NUM_CLASSES = len(train_data.classes)
 
-train_loader = DataLoader(dataset = train_data, batch_size = BATCH_SIZE, shuffle = True)
-
 def build_model():
-    model = timm.create_model('convnext_base', pretrained = True, num_classes = NUM_CLASSES)
+    model = timm.create_model("convnext_base", pretrained = True, num_classes = NUM_CLASSES)
     for name, param in model.named_parameters():
         param.requires_grad = True
     print(model.get_classifier())
@@ -42,13 +41,12 @@ def build_model():
     print(model)
     return model
 
-def train(model, x_train, epochs, batch_size=BATCH_SIZE):
+def train(model, x_train, epochs, batch_size=8):
     def acc_cal(pred, t):
         matrix = np.argmax(pred, axis=1)
         compare = matrix - t
         accuracy = (t.shape[0] - np.count_nonzero(compare)) / t.shape[0]
         return accuracy
-
     criterion = nn.CrossEntropyLoss().to(device)
     optimizer = optim.AdamW(model.parameters(), lr = 1e-5)
     train_state = []
@@ -90,7 +88,7 @@ def train(model, x_train, epochs, batch_size=BATCH_SIZE):
         dicts["train_acc"] = avg_acc
         if early_stopping_loss < avg_loss:
             early_stopping_count += 1
-            torch.save(model.state_dict(), f"./pth/timm_model_{epoch}({early_stopping_count}).pth")
+            torch.save(model.state_dict(), f"./path/timm_model_{epoch}({early_stopping_count}).pth")
             if early_stopping_count >= 3:
                 return model
         else:
@@ -101,12 +99,5 @@ def train(model, x_train, epochs, batch_size=BATCH_SIZE):
     return train_state
 
 model = build_model()
-train_state = train(model, train_loader, epochs=EPOCHS, batch_size=30)
+train_state = train(model, train_loader, epochs=EPOCHS, batch_size=BATCH_SIZE)
 torch.save(model.state_dict(),'./convnext_base.pth')
-
-
-
-
-
-
-
